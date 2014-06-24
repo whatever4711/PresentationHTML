@@ -26,14 +26,9 @@ URL: https://code.google.com/p/io-2012-slides
 
 <slides class="layout-widescreen">
 
-  <slide class="logoslide nobackground">
-    <article class="flexbox vcenter">
-      <span><img src="images/google_developers_logo.png"></span>
-    </article>
-  </slide>
 
   <slide class="title-slide segue nobackground">
-    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <aside class="gdbar"><img src="images/ub.png"></aside>
     <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
     <hgroup class="auto-fadein">
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
@@ -44,9 +39,12 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h2>Slide with Bullets</h2>
+      <h2>Software Defined Networks in Mininet</h2>
     </hgroup>
-    <article>
+    <article class="flexbox vcenter">
+      <img src="images/topo.png" height="50%" alt="Topology" title="Measurement setup">
+      <!--<footer class="source">source: place source info here</footer> -->
+    
       <ul>
         <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
         <li>Title capitalization is title case
@@ -57,6 +55,74 @@ URL: https://code.google.com/p/io-2012-slides
         <li>Subtitle capitalization is title case</li>
         <li>Titles and subtitles should never have a period at the end</li>
       </ul>
+    </article>
+  </slide>
+
+ <slide>
+    <hgroup>
+      <h2>Migrating</h2>
+      <h3>ITZ to Mininet</h3>
+    </hgroup>
+    <article class="smaller">
+<div class="columns-2">
+      <pre class="prettyprint" data-lang="xml">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;graphml ...&gt;
+  &lt;key attr.name="key" attr.type="int" for="edge" id="d36" /&gt;
+  ...
+  &lt;graph edgedefault="undirected"&gt;
+    &lt;data key="d0"&gt;2/01/11&lt;/data&gt;
+    &lt;data key="d1"&gt;Germany&lt;/dat&gt;
+    &lt;data key="d2"&gt;Country&lt;/data&gt;
+    &lt;data key="d3"&gt;DFN&lt;/data&gt;
+    ...
+    &lt;data key="d28"&gt;1&lt;/data&gt;
+    &lt;node id="0"&gt;
+      &lt;data key="d29"&gt;1&lt;/data&gt;
+      &lt;data key="d30"&gt;50.83333&lt;/data&gt;
+      &lt;data key="d31"&gt;Germany&lt;/data&gt;
+      &lt;data key="d32"&gt;0&lt;/data&gt;
+      &lt;data key="d33"&gt;12.91667&lt;/data&gt;
+      &lt;data key="d34"&gt;CHE&lt;/data&gt;
+    &lt;/node&gt;
+    ...
+    &lt;edge source="0" target="1"&gt;
+      &lt;data key="d35"&gt;e52&lt;/data&gt;
+      &lt;data key="d36"&gt;0&lt;/data&gt;
+    &lt;/edge&gt;
+    ...
+  &lt;/graph&gt;
+&lt;/graphml&gt;
+</pre>
+<pre class="prettyprint" data-lang="python">
+#!/usr/bin/python
+
+from mininet.topo import Topo
+...
+
+class GeneratedTopo( Topo ):
+    def __init__( self, **opts ):
+        # Initialize Topology
+        Topo.__init__( self, **opts )
+        # switches first
+        CHE = self.addSwitch( 's0' )
+        ...
+        # and now hosts
+        CHE_host = self.addHost( 'h0' )
+        ...
+        # add edges between switch and corresponding host
+        self.addLink( CHE , CHE_host )
+        ...
+        # add edges between switches
+        self.addLink( CHE , LEI, bw=10, delay='0.348009502ms')
+        ...
+topos = { 'generated': ( lambda: GeneratedTopo() ) }
+...
+
+if __name__ == '__main__':
+     sshd( setupNetwork() )
+</pre>
+</div>
     </article>
   </slide>
 
